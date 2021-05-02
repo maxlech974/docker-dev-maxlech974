@@ -1,0 +1,18 @@
+alias phpserv='php -S 0.0.0.0:8080 -t public'
+alias apserv='apache2ctl start'
+
+#permet de créer une config avec une database qui ne sera pas commité et qui correpond aux paramètres par défaut du dockerfile
+# !!! rajouter un argument a la fonction pour préciser un nom de DB par exemple : envloc my_db_project !!!
+
+envloc() {
+	touch ./.env.local
+  	echo "DATABASE_URL=mysql://root:mariadb@127.0.0.1:3306/$1?serverVersion=mariadb-10.3.27" >> ./.env.local
+  	bin/console doctrine:database:create
+}
+
+#github
+commit() {
+	git add .
+	git commit -m "$1"
+	git push
+}

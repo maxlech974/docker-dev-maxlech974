@@ -1,0 +1,4 @@
+damp() {
+    my_working_directory=$PWD
+    cp -rf $HOME/.docker-dev-maxlech974/containers/damp/.devcontainer $my_working_directory/.devcontainer
+}

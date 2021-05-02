@@ -1,0 +1,44 @@
+//inspirer de la version microsoft devcontainer. Ca génère deux containers, un pour la bdd et l'autre pour le serveur php et apache et node(optionnel)
+{
+	"name": "PHP & MariaDB (Community)",
+	"dockerComposeFile": "docker-compose.yml",
+	"service": "app",
+	"workspaceFolder": "/app",
+	
+	// Attention les valeurs sont par défaut : à changer
+	"settings": { 
+		"terminal.integrated.shell.linux": "/bin/bash",
+		"sqltools.connections": [{
+			"name": "Container database",
+			"driver": "MariaDB",
+			"server": "localhost",
+			"previewLimit": 50,
+			"port": 3306,
+			"database": "mariadb",
+			"username": "root",
+			"password": "mariadb"
+		}],
+        "editor.tabSize": 4
+	},
+
+	// Mettre les id des extension à installer
+	"extensions": [
+        "neilbrayfield.php-docblocker",
+        "phproberto.vscode-php-getters-setters",
+        "bmewburn.vscode-intelephense-client",
+        "mblode.twig-language-2",
+        "ikappas.composer",
+		"mrmlnc.vscode-apache",
+		"mtxr.sqltools",
+		"mtxr.sqltools-driver-mysql"
+	],
+
+	// ports 8080, 3306 ouvert par défaut, un serveur Apache est installer, vérifier que apache en local soit pas allumer pour par générer de conflit ip 
+	"forwardPorts": [8080, 3306],
+
+	// permet d'éviter le message d'erreur forbiddent
+	"postCreateCommand": "sudo chmod a+x \"$(pwd)\" && sudo rm -rf /var/www/html && sudo ln -s \"$(pwd)\" /var/www/html",
+
+	// evite l'escalade des privilèges root en cas de fausse manip ou d'attaque
+	"remoteUser": "vscode"
+}

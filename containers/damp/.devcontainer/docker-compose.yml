@@ -1,0 +1,42 @@
+version: '3'
+
+services: 
+  app:
+    build:
+      context: .
+      #le docker file est le moteur qui lance l'installation est les dépendances, ne pas toucher, le compose permets de créer deux container et de les faires communiquer
+      dockerfile: Dockerfile
+      args:
+        # [Choice] PHP version: 7, 7.4, 7.3
+        VARIANT: "7.4"
+        # [Option] Install Node.js
+        INSTALL_NODE: "true"
+        NODE_VERSION: "lts/*"
+        # Vérifier en local sur linux si les user uid et gid sont bien a 1000 par la commande pid si il y a un proble TODO
+        USER_UID: 1000
+        USER_GID: 1000
+
+    volumes:
+      - ..:/app:cached
+
+    command: sleep infinity
+
+  
+    network_mode: service:db
+
+
+
+  db:
+    image: mariadb:10.4
+    restart: unless-stopped
+    volumes:
+      - mariadb-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: mariadb
+      MYSQL_DATABASE: mariadb
+      MYSQL_USER: mariadb
+      MYSQL_PASSWORD: mariadb
+
+  
+volumes:
+  mariadb-data:
